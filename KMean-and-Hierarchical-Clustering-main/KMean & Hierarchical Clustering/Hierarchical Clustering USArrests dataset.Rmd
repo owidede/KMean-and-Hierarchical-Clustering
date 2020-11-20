@@ -1,0 +1,74 @@
+---
+title: "Hierarchical Clustering with USArrest dataset"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+```{r}
+library(datasets)
+data("USArrests")
+summary(USArrests)
+```
+
+
+```{r}
+df <- data.frame(States=rownames(USArrests), USArrests)
+par(las=2) # make label text perpendicular to axis
+par(mar=c(5,8,4,2)) # increase y-axis margin.
+barplot(df$Murder, names.arg = df$States, horiz = TRUE, cex.names = 0.5, xlab = "Murder Arrest per 100.000")
+```
+
+
+```{r}
+barplot(df$Assault, names.arg = df$States, horiz = TRUE, cex.names = 0.5, xlab = "Assault Arrest per 100.000")
+```
+
+
+```{r}
+barplot(df$UrbanPop, names.arg = df$States, horiz = TRUE, cex.names = 0.5, xlab = "Polulation in urban area")
+```
+
+
+```{r}
+df <- scale(df[, 2:5])
+d <- dist(df, method = "euclidean")
+clusters <- hclust(d, method = "complete" )
+plot(clusters, cex = 0.6, hang = -1)
+```
+
+
+```{r}
+plot(clusters, cex = 0.6, hang = -1)
+rect.hclust(clusters, k = 4, border = 2:5)
+```
+
+
+```{r}
+d <- dist(df, method = "euclidean")
+clusters <- hclust(d, method = "single" )
+plot(clusters, cex = 0.6, hang = -1)
+```
+
+
+```{r}
+d <- dist(df, method = "euclidean")
+clusters <- hclust(d, method = "average" )
+plot(clusters, cex = 0.6, hang = -1)
+```
+
+-Comparing single and average method-
+```{r}
+library(dendextend)
+clusters_sgl <- hclust(d, method = "single" )
+clusters_avrg <- hclust(d, method = "average" )
+clusters_sgl <- as.dendrogram(clusters_sgl)
+clusters_avrg <- as.dendrogram(clusters_avrg)
+tanglegram(clusters_sgl,clusters_avrg)
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```

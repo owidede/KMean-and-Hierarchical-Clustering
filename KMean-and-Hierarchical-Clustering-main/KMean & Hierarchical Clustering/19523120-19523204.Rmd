@@ -1,0 +1,39 @@
+---
+title: "KMean with attitude dataset"
+output: html_document
+---
+
+
+```{r}
+library(datasets)
+data("attitude")
+summary(attitude)
+```
+
+
+```{r}
+attitude.new <- attitude[, 1:6]
+attitude.class <- attitude[, "advance"]
+set.seed(3556)
+result <- kmeans(attitude.new, 5)
+result
+```
+
+
+```{r}
+par(mfrow=c(2,2), mar=c(5,4,2,2))
+plot(attitude.new[, c(1,2)], col=result$cluster)
+plot(attitude.new[, c(1,2)], col=attitude.class)
+plot(attitude.new[, c(3,4)], col=result$cluster)
+plot(attitude.new[, c(3,4)], col=attitude.class)
+```
+
+
+```{r}
+result$tot.withinss
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
